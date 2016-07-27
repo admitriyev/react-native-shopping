@@ -16,16 +16,16 @@ import {
 
 class BaseContainer extends Component {
   constructor(props) {
+    console.log("BaseContainer props " + JSON.stringify(props));
     super(props);
-    this.state = {showText: true};
+    this.state = {image: props.image};
   }
 
   render() {
     console.log("BaseContainer:render props " + JSON.stringify(this.props));
-    let image_uri = this.props.image
     return (
       <TouchableHighlight onPress={this._onPressButton.bind(this)}>
-        <Image source={{uri: image_uri}}
+        <Image source={{uri: this.state.image}}
           style={{width: 400, height: 400}} />
       </TouchableHighlight>
     );
@@ -33,6 +33,9 @@ class BaseContainer extends Component {
 
   _onPressButton() {
     console.log("_onPressButton props" + JSON.stringify(this.props));
+    this.setState({
+      image: 'https://s3-us-west-2.amazonaws.com/admitriyev-images/show-002.jpg'
+    });
   }
 
 }
