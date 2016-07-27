@@ -42,9 +42,10 @@ class EpisodeContainer extends BaseContainer {
   _onPressButton() {
     console.log("_onPressButton props" + JSON.stringify(this.props));
     console.log("_onPressButton episodes " + JSON.stringify(episodes));
+    i = (this.state.episode.episode_id === 1)? 1 : 0;
     newState = {
-      episode: episodes[1],
-      product: episodes[1].products[0]
+      episode: episodes[i],
+      product: episodes[i].products[0]
     }
     this.setState(newState);
   }
@@ -65,10 +66,16 @@ class ProductContainer extends BaseContainer {
 
   _onPressButton() {
     console.log("_onPressButton props" + JSON.stringify(this.props));
-    this.setState({
+    i = (this.state.episode.episode_id === 1)? 0 : 1;
+    p = 0
+    if (this.state.product.product_id === 1 || this.state.product.product_id === 3) {
+      p = 1;
+    }
+    newState = {
       episode: this.state.episode,
-      product: episodes[1].products[1]
-    });
+      product: episodes[i].products[p]
+    }
+    this.setState(newState);
   }
 
 }
