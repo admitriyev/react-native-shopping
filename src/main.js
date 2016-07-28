@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import episodes from './data'
 
+var Swiper = require('react-native-swiper');
+
 class EpisodeContainer extends Component {
 
   constructor(props) {
@@ -22,48 +24,57 @@ class EpisodeContainer extends Component {
     super(props);
     this.state = {
       episode: episodes[0],
-      product: episodes[0].products[0]
+      product_index: 0
     };
   }
 
   render() {
     //console.log("BaseContainer:render props " + JSON.stringify(this.props));
     var {height, width} = Dimensions.get('window');
+    i = this.state.product_index
     return (
       <View>
-        <TouchableHighlight onPress={this._onPressEpisode.bind(this)}>
-          <Image source={{uri: this.state.episode.image}}
-            style={[styles.container_image, {height:height / 2, width: width}]} />
-        </TouchableHighlight>
+        <Swiper style={styles.wrapper} height={height/2}
+        onMomentumScrollEnd={this._onPressEpisode.bind(this)}
+        showsButtons={true}>
+          {episodes.map( function(item, i) {
+            return(
+              <Image source={{uri: item.image}} key={i}
+                style={[styles.container_image, {height:height / 2, width: width}]} />
+            );
+          })}
+        </Swiper>
         <TouchableHighlight onPress={this._onPressProduct.bind(this)}>
-          <Image source={{uri: this.state.product.image}}
+          <Image source={{uri: this.state.episode.products[i].image}}
             style={[styles.container_image, {height:height / 2, width: width}]} />
         </TouchableHighlight>
       </View>
     );
   }
 
-  _onPressEpisode() {
-    console.log("_onPressButton props" + JSON.stringify(this.props));
-    console.log("_onPressButton episodes " + JSON.stringify(episodes));
-    i = (this.state.episode.episode_id === 1)? 1 : 0;
+  _onPressEpisode(e, state, context) {
+    /*
+    console.log("_onPressEpisode state " + JSON.stringify(state));
+    */
+
+    i = state.index
     newState = {
-      episode: episodes[i],
-      product: episodes[i].products[0]
+       episode: episodes[i],
+       product_index: 0
     }
     this.setState(newState);
   }
 
   _onPressProduct() {
-    console.log("_onPressButton props" + JSON.stringify(this.props));
-    i = (this.state.episode.episode_id === 1)? 0 : 1;
-    p = 0
-    if (this.state.product.product_id === 1 || this.state.product.product_id === 3) {
-      p = 1;
+    console.log("_onPressProduct props" + JSON.stringify(this.props));
+
+    pi = 0;
+    if (this.state.product_index < this.state.episode.products.length - 1) {
+      pi = this.state.product_index + 1;
     }
     newState = {
       episode: this.state.episode,
-      product: episodes[i].products[p]
+      product_index: pi
     }
     this.setState(newState);
   }
@@ -91,5 +102,7 @@ const styles = StyleSheet.create({
   container_image: {
     resizeMode: 'contain',
     backgroundColor: '#FFFFFF'
+  },
+  wrapper: {
   }
 });

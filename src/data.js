@@ -27,6 +27,16 @@ const episodes = [
       }
     ]
   },
+  {
+    episode_id: 3,
+    image: 'https://s3-us-west-2.amazonaws.com/admitriyev-images/show-003.jpg',
+    products: [
+      {
+        product_id: 5,
+        image: 'https://s3-us-west-2.amazonaws.com/admitriyev-images/product-005.jpg'
+      }
+    ]
+  }
 ]
 
 export default episodes;
