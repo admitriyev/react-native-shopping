@@ -14,32 +14,36 @@ import {
 } from 'react-native';
 import episodes from './data'
 
-class BaseContainer extends Component {
+class EpisodeContainer extends Component {
+
   constructor(props) {
-    console.log("BaseContainer props " + JSON.stringify(props));
-    console.log("BaseContainer episodes " + JSON.stringify(episodes));
+    console.log("EpisodeContainer props " + JSON.stringify(props));
+    console.log("EpisodeContainer episodes " + JSON.stringify(episodes));
     super(props);
     this.state = {
       episode: episodes[0],
       product: episodes[0].products[0]
     };
   }
-}
-
-class EpisodeContainer extends BaseContainer {
 
   render() {
-    console.log("BaseContainer:render props " + JSON.stringify(this.props));
+    //console.log("BaseContainer:render props " + JSON.stringify(this.props));
     var {height, width} = Dimensions.get('window');
     return (
-      <TouchableHighlight onPress={this._onPressButton.bind(this)}>
-        <Image source={{uri: this.state.episode.image}}
-          style={[styles.container_image, {height:height / 2, width: width}]} />
-      </TouchableHighlight>
+      <View>
+        <TouchableHighlight onPress={this._onPressEpisode.bind(this)}>
+          <Image source={{uri: this.state.episode.image}}
+            style={[styles.container_image, {height:height / 2, width: width}]} />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._onPressProduct.bind(this)}>
+          <Image source={{uri: this.state.product.image}}
+            style={[styles.container_image, {height:height / 2, width: width}]} />
+        </TouchableHighlight>
+      </View>
     );
   }
 
-  _onPressButton() {
+  _onPressEpisode() {
     console.log("_onPressButton props" + JSON.stringify(this.props));
     console.log("_onPressButton episodes " + JSON.stringify(episodes));
     i = (this.state.episode.episode_id === 1)? 1 : 0;
@@ -49,22 +53,8 @@ class EpisodeContainer extends BaseContainer {
     }
     this.setState(newState);
   }
-}
 
-class ProductContainer extends BaseContainer {
-
-  render() {
-    console.log("BaseContainer:render props " + JSON.stringify(this.props));
-    var {height, width} = Dimensions.get('window');
-    return (
-      <TouchableHighlight onPress={this._onPressButton.bind(this)}>
-        <Image source={{uri: this.state.product.image}}
-          style={[styles.container_image, {height:height / 2, width: width}]} />
-      </TouchableHighlight>
-    );
-  }
-
-  _onPressButton() {
+  _onPressProduct() {
     console.log("_onPressButton props" + JSON.stringify(this.props));
     i = (this.state.episode.episode_id === 1)? 0 : 1;
     p = 0
@@ -86,7 +76,6 @@ export default class ReactNativeShopping extends Component {
     return (
       <View style={styles.container}>
         <EpisodeContainer/>
-        <ProductContainer/>
       </View>
     );
   }
@@ -95,11 +84,12 @@ export default class ReactNativeShopping extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
   container_image: {
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    backgroundColor: '#FFFFFF'
   }
 });
